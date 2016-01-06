@@ -55,11 +55,15 @@ trait EmasMeetings extends MeetingsStrategy {
     def meetingsFunction = {
       case (Death(_), _) => List.empty[Agent[Genetic]]
       case (Fight(cap), agents) =>
-        checked[Genetic](agents).shuffled.grouped(cap).flatMap(fightStrategy.apply).toList
-      case (Reproduction(cap), agents) =>
-        val newAgents = checked[Genetic](agents).shuffled.grouped(cap).flatMap(reproductionStrategy.apply).toList
+        println("Fight")
+        val afterFightAgents = checked[Genetic](agents).shuffled.grouped(cap).flatMap(fightStrategy.apply).toList
+//      case (Reproduction(cap), agents) =>
+        val newAgents = checked[Genetic](afterFightAgents).shuffled.grouped(agents.size).flatMap(reproductionStrategy.apply).toList
+        println("Reproduction")
         stats.update((newAgents.maxBy(_.fitness).fitness, agents.size))
-        newAgents
+        println("Mutation")
+        val mutatedAgents = checked[Genetic](newAgents).shuffled.grouped(1).flatMap(reproductionStrategy.apply).toList
+        mutatedAgents
       case (Migration(_), agents) => agents
     }
   }

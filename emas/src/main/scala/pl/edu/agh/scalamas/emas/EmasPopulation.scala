@@ -34,8 +34,8 @@ import pl.edu.agh.scalamas.random.RandomGeneratorComponent
  * It also updates the stats with the best fitness found in this initial population.
  *
  * Parameters:
- *  - emas.populationSize - The size of the initial population
- *  - emas.initialEnergy - The initial energy of initial agents
+ * - emas.populationSize - The size of the initial population
+ * - emas.initialEnergy - The initial energy of initial agents
  */
 trait EmasPopulation extends PopulationStrategy {
   this: AgentRuntimeComponent
@@ -56,12 +56,14 @@ trait EmasPopulation extends PopulationStrategy {
     def initialPopulation = {
       val population = List.fill(populationSize) {
         val solution = genetic.generate
-        Agent[Genetic](solution, genetic.evaluate(solution), initialEnergy)
+        val agent = Agent[Genetic](solution, genetic.evaluate(solution), initialEnergy)
+        agent
       }
       population.maxBy(_.fitness).fitness
       stats.update((population.maxBy(_.fitness).fitness, 0L))
       population
     }
+
   }
 
 }

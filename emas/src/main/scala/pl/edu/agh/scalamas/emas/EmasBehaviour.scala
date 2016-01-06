@@ -34,12 +34,12 @@ import pl.edu.agh.scalamas.random.RandomGeneratorComponent
  * Agents also have some probability to migrate to another island.
  *
  * Parameters:
- *  - emas.reproductionThreshold - The amount of energy to start reproducing
- *  - emas.migrationProbability - The probability for an agent to migrate to another island
- *  - emas.deathCapacity - The size of death meetings
- *  - emas.fightCapacity - The size of fight meetings
- *  - emas.reproductionCapacity - The size of reproduction meetings
- *  - emas.migrationCapacity - The size of migration meetings
+ * - emas.reproductionThreshold - The amount of energy to start reproducing
+ * - emas.migrationProbability - The probability for an agent to migrate to another island
+ * - emas.deathCapacity - The size of death meetings
+ * - emas.fightCapacity - The size of fight meetings
+ * - emas.reproductionCapacity - The size of reproduction meetings
+ * - emas.migrationCapacity - The size of migration meetings
  */
 trait EmasBehaviour extends BehaviourStrategy {
   this: AgentRuntimeComponent with RandomGeneratorComponent =>
@@ -64,10 +64,12 @@ trait EmasBehaviour extends BehaviourStrategy {
 
     def behaviourFunction = {
       case Agent(_, _, energy) => energy match {
-        case 0 => death
-        case _ if random.nextDouble() < migrationProbability => migrate
-        case energy if energy >= reproductionThreshold => reproduce
-        case _ => fight
+//        case 0 => death
+//        case _ if random.nextDouble() < migrationProbability => migrate
+//        case energy if energy >= reproductionThreshold => reproduce
+
+        case _ =>  fight
+
       }
     }
   }

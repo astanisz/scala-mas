@@ -19,29 +19,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package pl.edu.agh.scalamas.emas
+package pl.edu.agh.scalamas.emas.fight
 
+import pl.edu.agh.ipd.game.GameImpl
+import pl.edu.agh.ipd.utils.{ProbabilityUtils, TemporatyConstants}
 import pl.edu.agh.scalamas.app.AgentRuntimeComponent
-import pl.edu.agh.scalamas.emas.fight.IpdFightStrategy
-import pl.edu.agh.scalamas.emas.reproduction.{IpdReproductionStrategy, DefaultReproduction}
+import pl.edu.agh.scalamas.emas.EmasTypes.Agent
 import pl.edu.agh.scalamas.genetic.GeneticProblem
-import pl.edu.agh.scalamas.mas.logic.DelegatingLogicStrategy
-import pl.edu.agh.scalamas.random.RandomGeneratorComponent
-import pl.edu.agh.scalamas.stats.StatsFactoryComponent
+import pl.edu.agh.ipd.game.RepeatedGame
 
-/**
- * Default EMAS logic. Combines the default strategies for generating the initial population, agent behaviour and meetings,
- * as well as default EMAS statistics.
- */
-trait EmasLogic extends DelegatingLogicStrategy
-with EmasPopulation
-with EmasBehaviour
-with EmasMeetings with IpdFightStrategy with IpdReproductionStrategy
-with EmasStats {
+import scala.math._
 
-  // dependencies:
-  this: AgentRuntimeComponent
-    with GeneticProblem
-    with StatsFactoryComponent
-    with RandomGeneratorComponent =>
+trait IpdFightStrategy extends FightStrategy {
+  this: AgentRuntimeComponent with GeneticProblem =>
+
+  def fightStrategy = IpdFightStrategy
+
+  object IpdFightStrategy extends Fight {
+    val fightTransfer = agentRuntime.config.getInt("emas.fightTransfer")
+
+    def apply(agents: List[Agent[Genetic]]) = agents match {
+      case List(a) => List(a)
+      case List(a, b) =>
+
+        genetic.fight(a.solution, b.solution)
+
+        val AtoBTransfer =
+          if (genetic.ordering.lt(a.fitness, b.fitness))
+            min(fightTransfer, a.energy)
+          else
+            -min(fightTransfer, b.energy)
+        List(a.copy(energy = a.energy - AtoBTransfer), b.copy(energy = b.energy + AtoBTransfer))
+    }
+
+
+  }
+
 }

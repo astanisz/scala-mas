@@ -19,29 +19,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package pl.edu.agh.scalamas.emas
+package pl.edu.agh.ipd.model
 
-import pl.edu.agh.scalamas.app.AgentRuntimeComponent
-import pl.edu.agh.scalamas.emas.fight.IpdFightStrategy
-import pl.edu.agh.scalamas.emas.reproduction.{IpdReproductionStrategy, DefaultReproduction}
-import pl.edu.agh.scalamas.genetic.GeneticProblem
-import pl.edu.agh.scalamas.mas.logic.DelegatingLogicStrategy
-import pl.edu.agh.scalamas.random.RandomGeneratorComponent
-import pl.edu.agh.scalamas.stats.StatsFactoryComponent
+import pl.edu.agh.scalamas.mas.LogicTypes
 
-/**
- * Default EMAS logic. Combines the default strategies for generating the initial population, agent behaviour and meetings,
- * as well as default EMAS statistics.
- */
-trait EmasLogic extends DelegatingLogicStrategy
-with EmasPopulation
-with EmasBehaviour
-with EmasMeetings with IpdFightStrategy with IpdReproductionStrategy
-with EmasStats {
+class Player {
+  private var payOff: Double = 0.0
+  private var probability: Double = 0.0
+  private var strategy: Strategy = null
 
-  // dependencies:
-  this: AgentRuntimeComponent
-    with GeneticProblem
-    with StatsFactoryComponent
-    with RandomGeneratorComponent =>
+  def getPayOff: Double = {
+    return payOff
+  }
+
+  def addPayOff(payOff: Double) {
+    this.payOff += payOff
+  }
+
+  def getProbability: Double = {
+    return probability
+  }
+
+  def setProbability(probability: Double) {
+    this.probability = probability
+  }
+
+  def getStrategy: Strategy = {
+    return strategy
+  }
+
+  def setStrategy(strategy: Strategy) {
+    this.strategy = strategy
+  }
+
+  def setPayoff(payOff: Double) {
+    this.payOff = payOff
+  }
+
+  def getStrategyCopy: Strategy = {
+    return strategy.getCopy
+  }
 }

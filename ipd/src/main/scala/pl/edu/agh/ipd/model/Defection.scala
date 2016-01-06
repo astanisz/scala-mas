@@ -19,29 +19,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package pl.edu.agh.scalamas.emas
+package pl.edu.agh.ipd.model
 
-import pl.edu.agh.scalamas.app.AgentRuntimeComponent
-import pl.edu.agh.scalamas.emas.fight.IpdFightStrategy
-import pl.edu.agh.scalamas.emas.reproduction.{IpdReproductionStrategy, DefaultReproduction}
-import pl.edu.agh.scalamas.genetic.GeneticProblem
-import pl.edu.agh.scalamas.mas.logic.DelegatingLogicStrategy
-import pl.edu.agh.scalamas.random.RandomGeneratorComponent
-import pl.edu.agh.scalamas.stats.StatsFactoryComponent
+import pl.edu.agh.ipd.model.Action.Action
+import pl.edu.agh.ipd.model.State.Color.Color
+import pl.edu.agh.ipd.model.State.Color
 
-/**
- * Default EMAS logic. Combines the default strategies for generating the initial population, agent behaviour and meetings,
- * as well as default EMAS statistics.
- */
-trait EmasLogic extends DelegatingLogicStrategy
-with EmasPopulation
-with EmasBehaviour
-with EmasMeetings with IpdFightStrategy with IpdReproductionStrategy
-with EmasStats {
+class Defection extends State {
+  def getAction: Action = {
+    return Action.DEFECTION
+  }
 
-  // dependencies:
-  this: AgentRuntimeComponent
-    with GeneticProblem
-    with StatsFactoryComponent
-    with RandomGeneratorComponent =>
+  def getColor: Color = {
+    return Color.RED
+  }
+
+  def getCopy: State = {
+    return new Defection
+  }
 }

@@ -75,7 +75,7 @@ trait GeneticOps[G <: GeneticOps[G]] extends GeneticEvaluator[G] with GeneticTra
 }
 
 /**
- * Evaluates solutions and generates initial ones for futher optimization.
+ * Evaluates solutions and generates initial ones for further optimization.
  * This operator is usually-problem specific.
  *
  * @tparam G recursive parameter type representing the polymorphic family of operators
@@ -100,6 +100,7 @@ trait GeneticEvaluator[G <: GeneticOps[G]] {
   /**
    * Provides a lower bound for the possible evaluations, with respect to ordering.
    *
+   *
    * @return a lower evaluation bound
    */
   def minimal: G#Evaluation
@@ -119,19 +120,28 @@ trait GeneticEvaluator[G <: GeneticOps[G]] {
 trait GeneticTransformer[G <: GeneticOps[G]] {
 
   /**
-   * An unary transformation operator. Created a new solution out of an existing one (e.g. using mutation or local search).
+   * An unary transformation operator. Creates a new solution out of an existing one (e.g. using mutation or local search).
    *
    * @param solution the solution to be transformed
    * @return a new, transformed solution
    */
   def transform(solution: G#Solution): G#Solution
 
+
+  def transform(solution: List[G#Solution]): List[G#Solution]={
+    solution
+  }
+
   /**
-   * An binary transformation operator. Created a new solution out of two existing ones (e.g. using crossover).
+   * A binary transformation operator. Creates a new solution out of two existing ones (e.g. using crossover).
    *
    * @param solution1 the first solution to be transformed
    * @param solution2 the second solution to be transformed
    * @return a pair of new, transformed solutions
    */
   def transform(solution1: G#Solution, solution2: G#Solution): (G#Solution, G#Solution)
+
+  def fight(solution1: G#Solution, solution2: G#Solution): List[G#Solution] ={
+    List(solution1,solution2)
+  }
 }
