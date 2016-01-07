@@ -3,7 +3,7 @@ package pl.edu.agh.scalamas.genetic
 import pl.edu.agh.ipd.evolution.{MutationFromPaper, Reproduction}
 import pl.edu.agh.ipd.game.RepeatedGame
 import pl.edu.agh.ipd.model.{Defection, StrategyImpl, Player}
-import pl.edu.agh.ipd.utils.{TemporatyConstants, ProbabilityUtils}
+import pl.edu.agh.ipd.utils.{ ProbabilityUtils}
 import pl.edu.agh.scalamas.app.AgentRuntimeComponent
 import pl.edu.agh.scalamas.random.RandomGeneratorComponent
 
@@ -26,11 +26,11 @@ trait IteratedPrisonersDilema extends GeneticProblem {
     type Solution = Player
     type Evaluation = Double
 
-    def config = agentRuntime.config.getConfig("genetic.rastrigin")
+    def config = agentRuntime.config.getConfig("genetic.ipd")
 
-    val problemSize = config.getInt("problemSize")
-    val mutationChance = config.getDouble("mutationChance")
-    val mutationRate = config.getDouble("mutationRate")
+    val mutationProbability = config.getDouble("mutationProbability")
+    val delta = config.getDouble("delta")
+    val alpha = config.getDouble("alpha")
 
     def generate = {
       val strategy = new StrategyImpl
@@ -47,7 +47,7 @@ trait IteratedPrisonersDilema extends GeneticProblem {
 
 
     override def fight(solution1: Solution, solution2: Solution) = {
-      val repeated: RepeatedGame = new RepeatedGame
+      val repeated: RepeatedGame = new RepeatedGame(delta)
       repeated.play(solution1, solution2)
       List(solution1, solution2)
     }
@@ -63,7 +63,6 @@ trait IteratedPrisonersDilema extends GeneticProblem {
 
     def transform(solution: Solution) = {
       val mutation: MutationFromPaper = new MutationFromPaper
-      val mutationProbability: Double = 0.001
       if (ProbabilityUtils.simulateProbability(mutationProbability))
         mutation.mutate(solution)
       else solution
@@ -75,18 +74,11 @@ trait IteratedPrisonersDilema extends GeneticProblem {
     def transform(solution1: Solution, solution2: Solution) =
       (solution1, solution2)
 
-    // mutateSolutions(recombineSolutions(solution1, solution2))
 
     def reproduction(solutions: List[Solution]): List[Solution] = {
-      val reprod: Reproduction = new Reproduction
+      val reprod: Reproduction = new Reproduction(alpha)
       return reprod.reproduct(solutions)
     }
-
-
-    //    def mutateSolutions(s: (Solution, Solution)) = s match {
-    //      case (solution1, solution2) => (mutate(solution1), mutate(solution2))
-    //    }
-
 
   }
 

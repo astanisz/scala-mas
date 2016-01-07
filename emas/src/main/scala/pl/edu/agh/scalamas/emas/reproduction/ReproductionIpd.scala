@@ -21,7 +21,7 @@
  */
 package pl.edu.agh.scalamas.emas.reproduction
 
-import pl.edu.agh.ipd.utils.{TemporatyConstants, ProbabilityUtils}
+import pl.edu.agh.ipd.utils.{ ProbabilityUtils}
 import pl.edu.agh.scalamas.app.AgentRuntimeComponent
 import pl.edu.agh.scalamas.emas.EmasTypes.Agent
 import pl.edu.agh.scalamas.genetic.GeneticProblem

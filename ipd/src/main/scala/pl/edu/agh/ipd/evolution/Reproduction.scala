@@ -1,14 +1,14 @@
 package pl.edu.agh.ipd.evolution
 
 import pl.edu.agh.ipd.model.Player
-import pl.edu.agh.ipd.utils.{TemporatyConstants, ProbabilityUtils}
+import pl.edu.agh.ipd.utils.{ ProbabilityUtils}
 
 import scala.collection.mutable.ListBuffer
 
 /**
  * Created by Anita on 2016-01-03.
  */
-class Reproduction {
+class Reproduction(val ALPHA:Double) {
 
   def reproduct(solutions: List[Player] ) : List[Player] =
   {
@@ -29,7 +29,7 @@ class Reproduction {
 
       val parent: Player = pickParentProportionalToPayoff(solutions)
       newPopulation.insert(i - 1, getCopyOf(parent))
-      if (ProbabilityUtils.simulateProbability(TemporatyConstants.ALPHA)) {
+      if (ProbabilityUtils.simulateProbability(ALPHA)) {
         newPopulation.insert(i, getCopyOf(parent))
       }
       else {

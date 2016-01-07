@@ -24,7 +24,7 @@ package pl.edu.agh.scalamas.examples
 
 import pl.edu.agh.scalamas.app.{ConcurrentStack, SynchronousEnvironment}
 import pl.edu.agh.scalamas.emas.EmasLogic
-import pl.edu.agh.scalamas.genetic.RastriginProblem
+import pl.edu.agh.scalamas.genetic.{IteratedPrisonersDilema, RastriginProblem}
 
 import scala.concurrent.duration._
 
@@ -34,7 +34,7 @@ import scala.concurrent.duration._
 object EmasApp extends ConcurrentStack("emas")
   with SynchronousEnvironment
   with EmasLogic
-  with RastriginProblem {
+  with IteratedPrisonersDilema {
 
   def main(args: Array[String]) {
     run(5 seconds)

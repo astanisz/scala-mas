@@ -26,6 +26,8 @@ object Dependencies {
     "org.scalacheck" %% "scalacheck" % "1.12.1"
   ).map(_ % "test")
 
+  val ipdDeps = config
+
   val geneticDeps = config ++ random
 
   val emasDeps = config ++ logging

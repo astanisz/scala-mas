@@ -21,12 +21,9 @@
  */
 package pl.edu.agh.scalamas.emas.fight
 
-import pl.edu.agh.ipd.game.GameImpl
-import pl.edu.agh.ipd.utils.{ProbabilityUtils, TemporatyConstants}
 import pl.edu.agh.scalamas.app.AgentRuntimeComponent
 import pl.edu.agh.scalamas.emas.EmasTypes.Agent
 import pl.edu.agh.scalamas.genetic.GeneticProblem
-import pl.edu.agh.ipd.game.RepeatedGame
 
 import scala.math._
 

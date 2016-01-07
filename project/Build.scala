@@ -41,18 +41,22 @@ object ScalaMasBuild extends Build {
     .settings(libraryDependencies ++= coreDeps)
     .settings(parallelExecution in Test := false)
 
+  lazy val IPDProject = subProject("ipd")
+    .settings(libraryDependencies ++= ipdDeps)
+	  .dependsOn(CoreProject)
+
   lazy val GeneticProject = subProject("genetic")
     .settings(libraryDependencies ++= geneticDeps)
-    .dependsOn(CoreProject)
+    .dependsOn(CoreProject, IPDProject)
 
   lazy val EmasProject = subProject("emas")
     .settings(libraryDependencies ++= emasDeps)
-    .dependsOn(CoreProject, GeneticProject)
+    .dependsOn(CoreProject, GeneticProject, IPDProject)
 
   lazy val ExamplesProject = subProject("examples")
     .dependsOn(EmasProject, CoreProject, GeneticProject)
 
-  lazy val publishedProjects = Seq[ProjectReference](CoreProject, GeneticProject, EmasProject, ExamplesProject)
+  lazy val publishedProjects = Seq[ProjectReference](CoreProject, IPDProject, GeneticProject, EmasProject, ExamplesProject)
 
   lazy val Root = Project("Root", file("."))
     .settings(commonSettings: _*)
