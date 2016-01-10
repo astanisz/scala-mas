@@ -39,14 +39,17 @@ trait IpdFightStrategy extends FightStrategy {
       case List(a) => List(a)
       case List(a, b) =>
 
-        genetic.fight(a.solution, b.solution)
+        val newSolutions = genetic.fight(a.solution, b.solution)
+        val newA: Genetic#Solution=newSolutions._1
+        val newB: Genetic#Solution=newSolutions._2
+//        val AtoBTransfer =
+//          if (genetic.ordering.lt(a.fitness, b.fitness))
+//            min(fightTransfer, a.energy)
+//          else
+//            -min(fightTransfer, b.energy)
+//        List(a.copy(energy = a.energy - AtoBTransfer), b.copy(energy = b.energy + AtoBTransfer))
 
-        val AtoBTransfer =
-          if (genetic.ordering.lt(a.fitness, b.fitness))
-            min(fightTransfer, a.energy)
-          else
-            -min(fightTransfer, b.energy)
-        List(a.copy(energy = a.energy - AtoBTransfer), b.copy(energy = b.energy + AtoBTransfer))
+        List(Agent[Genetic](newA, genetic.evaluate(newA), 0),Agent[Genetic](newB, genetic.evaluate(newB), 0))
     }
 
 

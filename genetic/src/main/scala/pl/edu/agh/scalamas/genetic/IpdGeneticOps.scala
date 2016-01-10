@@ -2,7 +2,7 @@ package pl.edu.agh.scalamas.genetic
 
 import pl.edu.agh.ipd.evolution.{MutationFromPaper, Reproduction}
 import pl.edu.agh.ipd.game.RepeatedGame
-import pl.edu.agh.ipd.model.{Defection, StrategyImpl, Player}
+import pl.edu.agh.ipd.model._
 import pl.edu.agh.ipd.utils.{ ProbabilityUtils}
 import pl.edu.agh.scalamas.app.AgentRuntimeComponent
 import pl.edu.agh.scalamas.random.RandomGeneratorComponent
@@ -48,8 +48,8 @@ trait IteratedPrisonersDilema extends GeneticProblem {
 
     override def fight(solution1: Solution, solution2: Solution) = {
       val repeated: RepeatedGame = new RepeatedGame(delta)
-      repeated.play(solution1, solution2)
-      List(solution1, solution2)
+      val newSolutions=repeated.play(solution1, solution2)
+      newSolutions
     }
 
     def evaluate(solution: Solution) = {
@@ -57,7 +57,7 @@ trait IteratedPrisonersDilema extends GeneticProblem {
     }
 
     // TODO take problemSize into account
-    val minimal = 10000.0
+    val minimal = 0.0
 
     val ordering = Ordering[Double].reverse
 
@@ -77,9 +77,19 @@ trait IteratedPrisonersDilema extends GeneticProblem {
 
     def reproduction(solutions: List[Solution]): List[Solution] = {
       val reprod: Reproduction = new Reproduction(alpha)
-      return reprod.reproduct(solutions)
+      reprod.reproduct(solutions)
     }
 
+    override def evaluateFinalResult(solutions: List[Solution]): Double={
+      var cooperationSum = 0
+      var statesNumber = 0
+      for (s<-solutions) {
+        val states :ListBuffer[State] = s.getStrategy.getStates
+        statesNumber += states.size
+        cooperationSum += states.toStream.count(state => state.getAction.eq(Action.COOPERATION))
+      }
+      cooperationSum * 100.0 / statesNumber
+    }
   }
 
 }

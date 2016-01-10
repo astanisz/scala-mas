@@ -41,12 +41,12 @@ trait IpdReproductionStrategy extends ReproductionStrategy {
     def apply(agents: List[Agent[Genetic]]) = agents match {
       case List(a) =>
         val s = genetic.transform(a.solution)
-        val f = genetic.evaluate(s)
+        val f = a.fitness
        // val e = min(reproductionTransfer, a.energy)
         //List(a.copy(energy = a.energy - e), Agent[Genetic](s, f, e))
-//       List( Agent[Genetic](s, f, 0))
-        val e = min(reproductionTransfer, a.energy)
-        List(a.copy(energy = a.energy - e), Agent[Genetic](s, f, e))
+     List( Agent[Genetic](s, f, 0))
+//        val e = min(reproductionTransfer, a.energy)
+//        List(a.copy(energy = a.energy - e), Agent[Genetic](s, f, e))
       case _ =>
         var solutions: List[Genetic#Solution] = agents.map(x => x.solution)
         solutions = genetic.transform(solutions)

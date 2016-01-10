@@ -97,6 +97,10 @@ trait GeneticEvaluator[G <: GeneticOps[G]] {
    */
   def evaluate(solution: G#Solution): G#Evaluation
 
+  def evaluateFinalResult(solutions: List[G#Solution]): Double={
+    0.0
+  }
+
   /**
    * Provides a lower bound for the possible evaluations, with respect to ordering.
    *
@@ -141,7 +145,7 @@ trait GeneticTransformer[G <: GeneticOps[G]] {
    */
   def transform(solution1: G#Solution, solution2: G#Solution): (G#Solution, G#Solution)
 
-  def fight(solution1: G#Solution, solution2: G#Solution): List[G#Solution] ={
-    List(solution1,solution2)
+  def fight(solution1: G#Solution, solution2: G#Solution): (G#Solution, G#Solution) ={
+    (solution1,solution2)
   }
 }

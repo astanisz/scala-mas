@@ -10,7 +10,7 @@ import pl.edu.agh.ipd.utils.{ProbabilityUtils}
  */
 class RepeatedGame(val DELTA: Double) {
 
-  def play(players: Tuple2[Player, Player]): List[Player] = {
+  def play(players: Tuple2[Player, Player]): (Player,Player) = {
     val player1 = players._1
     val player2 = players._2
     player1.setPayoff(0)
@@ -20,7 +20,7 @@ class RepeatedGame(val DELTA: Double) {
       playRound(player1, player2)
     } while (ProbabilityUtils.simulateProbability(DELTA))
 
-    List(player1, player2)
+    (player1, player2)
   }
 
   /**

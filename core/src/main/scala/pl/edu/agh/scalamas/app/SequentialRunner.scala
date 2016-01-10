@@ -62,7 +62,7 @@ trait SequentialRunner {
   }
 
   def run(duration: FiniteDuration): Unit = {
-    val logger = new Logger(1 second)
+//    val logger = new Logger(1 second)
     val deadline = duration fromNow
     var islands = Array.fill(islandsNumber)(logic.initialPopulation)
     while (deadline.hasTimeLeft) {
@@ -81,7 +81,7 @@ trait SequentialRunner {
           islands(destination) ::= agent
       }
 
-      logger.printOverdueLog()
+    //  logger.printOverdueLog()
     }
   }
 }
