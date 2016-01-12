@@ -12,5 +12,7 @@ addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.0.0")
 
 addSbtPlugin("com.eed3si9n" % "sbt-unidoc" % "0.3.1")
 
+addSbtPlugin("org.scala-sbt.plugins" % "sbt-onejar" % "0.8")
+
 libraryDependencies += "org.apache.commons" % "commons-collections4" % "4.1"
 

@@ -39,5 +39,3 @@ class RepeatedGame(val DELTA: Double) {
     player2.getStrategy.goToNextState(action1)
   }
 }
-
-

@@ -29,8 +29,12 @@ trait IteratedPrisonersDilema extends GeneticProblem {
     def config = agentRuntime.config.getConfig("genetic.ipd")
 
     val mutationProbability = config.getDouble("mutationProbability")
-    val delta = config.getDouble("delta")
-    val alpha = config.getDouble("alpha")
+
+    // This obscure code gets environment variable DELTA if defined. In other case delta is read from config
+    val delta = scala.util.Properties.envOrElse("DELTA", config.getString("delta")).toDouble
+
+    // Similar hack for alpha
+    val alpha = scala.util.Properties.envOrElse("ALPHA", config.getString("alpha")).toDouble
 
     def generate = {
       val strategy = new StrategyImpl
