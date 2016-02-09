@@ -8,7 +8,6 @@ import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
 object MutationFromPaper {
-  private val mutationProbability: Double = 0.001
   private val halfChance: Double = 0.5
 }
 
@@ -17,7 +16,7 @@ class MutationFromPaper {
 
 
   def mutate(player: Player):Player= {
-    return mutatePlayer(player)
+    mutatePlayer(player)
   }
 
   private def mutatePlayer(player: Player):Player= {
@@ -69,24 +68,24 @@ class MutationFromPaper {
 
   private def pickTransitionAtRandom: Action = {
     if (ProbabilityUtils.simulateProbability(MutationFromPaper.halfChance)) {
-      return Action.COOPERATION
+       Action.COOPERATION
     }
     else {
-      return Action.DEFECTION
+       Action.DEFECTION
     }
   }
 
   private def pickStateAtRandom(player: Player): State = {
     val states: ListBuffer[State] = player.getStrategy.getStates
-    return states(rand.nextInt(states.size))
+     states(rand.nextInt(states.size))
   }
 
   private def createStateAtRandom: State = {
     if (ProbabilityUtils.simulateProbability(MutationFromPaper.halfChance)) {
-      return new Cooperation
+      new Cooperation
     }
     else {
-      return new Defection
+      new Defection
     }
   }
 }

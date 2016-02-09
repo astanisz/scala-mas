@@ -21,9 +21,11 @@
  */
 package pl.edu.agh.ipd.utils
 
+
 object ProbabilityUtils {
+
   def simulateProbability(probability: Double): Boolean = {
-    return Math.random < probability
+  return Math.random< probability
   }
 }
 

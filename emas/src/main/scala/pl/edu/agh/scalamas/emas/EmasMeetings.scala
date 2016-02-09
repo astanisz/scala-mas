@@ -53,16 +53,15 @@ trait EmasMeetings extends MeetingsStrategy {
     implicit val rand = randomData
 
     def meetingsFunction = {
-//      case (Death(_), _) => List.empty[Agent[Genetic]]
+      //      case (Death(_), _) => List.empty[Agent[Genetic]]
+      //      case (Reproduction(cap), agents) =>
       case (Fight(cap), agents) =>
-
-        val afterFightAgents = checked[Genetic](agents).shuffled.grouped(cap).flatMap(fightStrategy.apply).toList
-//      case (Reproduction(cap), agents) =>
-
-
-         val newAgents = checked[Genetic](afterFightAgents).shuffled.grouped(agents.size).flatMap(reproductionStrategy.apply).toList
-
-        val mutatedAgents = checked[Genetic](newAgents).shuffled.grouped(1).flatMap(reproductionStrategy.apply).toList
+        //play a game
+        val afterFightAgents = checked[Genetic](agents).grouped(cap).flatMap(fightStrategy.apply).toList
+        //reproduce
+        val newAgents = checked[Genetic](afterFightAgents).grouped(agents.size).flatMap(reproductionStrategy.apply).toList
+        //mutate
+        val mutatedAgents = checked[Genetic](newAgents).grouped(1).flatMap(reproductionStrategy.apply).toList
         var sum:Double=0
         for(a<-mutatedAgents){
           sum=sum+a.fitness.asInstanceOf[Double]
