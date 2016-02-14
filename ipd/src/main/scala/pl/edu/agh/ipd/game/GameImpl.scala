@@ -34,15 +34,16 @@ class GameImpl {
     val P = 1
   }
 
-  def play(players: Tuple2[Player,Player], actions: Tuple2[Action,Action]) {
+  def play(players: Tuple2[Player,Player], actions: Tuple2[Action,Action]) : (Player, Player) ={
     val player1: Player = players._1
     val player2: Player = players._2
     val action1: Action = actions._1
     val action2: Action = actions._2
     setPayoffs(player1, player2, action1, action2)
+    (player1,player2)
   }
 
-  private def setPayoffs(player1: Player, player2: Player, action1: Action, action2: Action) {
+  private def setPayoffs(player1: Player, player2: Player, action1: Action, action2: Action): (Player, Player) = {
     if (action1 == Action.COOPERATION) {
       if (action2 == Action.COOPERATION) {
         player1.addPayOff(Payoff.R)
@@ -63,5 +64,6 @@ class GameImpl {
         player2.addPayOff(Payoff.P)
       }
     }
+    (player1,player2)
   }
 }

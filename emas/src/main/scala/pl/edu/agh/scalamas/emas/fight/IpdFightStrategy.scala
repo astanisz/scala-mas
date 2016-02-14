@@ -36,8 +36,7 @@ trait IpdFightStrategy extends FightStrategy {
     val fightTransfer = agentRuntime.config.getInt("emas.fightTransfer")
 
     def apply(agents: List[Agent[Genetic]]) = agents match {
-      case List(a) => List(a)
-      case List(a, b) =>
+       case List(a, b) =>
 
         val newSolutions = genetic.fight(a.solution, b.solution)
         val newA: Genetic#Solution=newSolutions._1

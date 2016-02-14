@@ -57,7 +57,7 @@ trait EmasMeetings extends MeetingsStrategy {
       //      case (Reproduction(cap), agents) =>
       case (Fight(cap), agents) =>
         //play a game
-        val afterFightAgents = checked[Genetic](agents).grouped(cap).flatMap(fightStrategy.apply).toList
+        val afterFightAgents = checked[Genetic](agents).grouped(2).flatMap(fightStrategy.apply).toList
         //reproduce
         val newAgents = checked[Genetic](afterFightAgents).grouped(agents.size).flatMap(reproductionStrategy.apply).toList
         //mutate
@@ -66,11 +66,10 @@ trait EmasMeetings extends MeetingsStrategy {
         for(a<-mutatedAgents){
           sum=sum+a.fitness.asInstanceOf[Double]
         }
-        println("Average fitness "+sum/afterFightAgents.size)
-        println("Percentage of cooperations "+genetic.evaluateFinalResult(mutatedAgents.map((a:Agent[Genetic])=>a.solution)))
+//        println("Average fitness "+sum/afterFightAgents.size)
+//        "Percentage of cooperations "+
+        println(genetic.evaluateFinalResult(mutatedAgents.map((a:Agent[Genetic])=>a.solution)))
         mutatedAgents
-
-
       case (Migration(_), agents) => agents
     }
   }
