@@ -21,7 +21,7 @@
  */
 package pl.edu.agh.scalamas.mas.async
 
-import akka.actor.{Actor, Props}
+import akka.actor.{PoisonPill, ActorRef, Actor, Props}
 import pl.edu.agh.scalamas.mas.Logic
 import pl.edu.agh.scalamas.mas.LogicTypes._
 import pl.edu.agh.scalamas.mas.RootEnvironment.{Add, migration}
@@ -40,9 +40,8 @@ object AsyncEnvironment {
  * @param logic the callbacks of the simulation
  */
 class AsyncEnvironment(logic: Logic) extends Actor {
-
-  val arenas = arenasForBehaviours(logic.behaviours, migration orElse logic.meetingsFunction)
-  val switchingBehaviour = (agent: Agent) => arenas(logic.behaviourFunction(agent))
+  val arenas = arenasForPosition(logic.behaviours, logic.initialPopulation, logic.positionFunction, migration orElse logic.meetingsFunction)
+  val switchingBehaviour = (agent: Agent) => arenas((logic.positionFunction(agent, logic.arenas,logic.behaviourFunction(agent)),logic.behaviourFunction(agent)) )
 
   logic.initialPopulation.foreach(addAgent)
 
@@ -52,10 +51,19 @@ class AsyncEnvironment(logic: Logic) extends Actor {
 
   def addAgent(agent: Agent) = context.actorOf(Individual.props(agent, switchingBehaviour))
 
-  def arenasForBehaviours(behaviours: Seq[Behaviour], meetings: MeetingFunction) =
-    behaviours map {
-      behaviour =>
-        val meeting = (agents: List[Agent]) => meetings((behaviour, agents))
-        behaviour -> context.actorOf(Arena.props(behaviour.capacity, meeting), behaviour.getClass.getSimpleName)
-    } toMap
+  def arenasForPosition(behaviuors: Seq[Behaviour], population: Population, positions: PositionFunction, meetings: MeetingFunction) =
+  {
+  var arenasMap: Map[Tuple2[Int, Behaviour], ActorRef] = Map()
+      behaviuors map {
+        behaviour =>
+
+          var arenasAmount: Int = logic.arenas
+
+          for (i <-0 to arenasAmount-1) {
+              val meeting = (agents: List[Agent]) => meetings((behaviour, agents))
+              arenasMap+=((i,behaviour) -> context.actorOf(Arena.props(behaviour.capacity, meeting, i), behaviour.getClass.getSimpleName+i))
+          }
+      }
+    arenasMap
+  }
 }

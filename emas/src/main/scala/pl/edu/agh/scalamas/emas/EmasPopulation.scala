@@ -24,6 +24,7 @@ package pl.edu.agh.scalamas.emas
 import pl.edu.agh.scalamas.app.AgentRuntimeComponent
 import pl.edu.agh.scalamas.emas.EmasTypes._
 import pl.edu.agh.scalamas.genetic.GeneticProblem
+import pl.edu.agh.scalamas.mas.LogicTypes.Coordinates
 import pl.edu.agh.scalamas.mas.logic.PopulationStrategy
 import pl.edu.agh.scalamas.random.RandomGeneratorComponent
 
@@ -50,17 +51,27 @@ trait EmasPopulation extends PopulationStrategy {
 
     val populationSize = config.getInt("populationSize")
     val initialEnergy = config.getInt("initialEnergy")
+    val arenasNumber = config.getInt("arenas")
 
     implicit val ordering = genetic.ordering
 
+    def arenas = arenasNumber
     def initialPopulation = {
+      var i:Int=0
+      var j:Int =0
       val population = List.fill(populationSize) {
         val solution = genetic.generate
-        val agent = Agent[Genetic](solution, genetic.evaluate(solution), initialEnergy)
+        val agent = Agent[Genetic](solution, genetic.evaluate(solution), initialEnergy, new Coordinates(i,j),0)
+        if(i<arenas-1)
+          i=i+1
+        else{
+          i=0
+          j=j+1
+        }
         agent
       }
-      population.maxBy(_.fitness).fitness
-      stats.update((population.maxBy(_.fitness).fitness, 0L))
+      //population.maxBy(_.fitness).fitness
+//      stats.update((population.maxBy(_.fitness).fitness, 0L))
       population
     }
 

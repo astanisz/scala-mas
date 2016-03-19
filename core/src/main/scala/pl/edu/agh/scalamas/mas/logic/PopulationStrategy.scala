@@ -34,6 +34,8 @@ trait PopulationStrategy {
 
     def initialPopulation: Population
 
+    def arenasNumber : Int
+
   }
 
 }

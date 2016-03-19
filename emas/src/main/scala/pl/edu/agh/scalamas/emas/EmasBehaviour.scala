@@ -22,7 +22,7 @@
 package pl.edu.agh.scalamas.emas
 
 import pl.edu.agh.scalamas.app.AgentRuntimeComponent
-import pl.edu.agh.scalamas.emas.EmasTypes.{Agent, Reproduction, Fight, Death}
+import pl.edu.agh.scalamas.emas.EmasTypes._
 import pl.edu.agh.scalamas.mas.LogicTypes.Migration
 import pl.edu.agh.scalamas.mas.logic.BehaviourStrategy
 import pl.edu.agh.scalamas.random.RandomGeneratorComponent
@@ -49,29 +49,36 @@ trait EmasBehaviour extends BehaviourStrategy {
   object DefaultEmasBehaviour extends BehaviourProvider {
     val config = agentRuntime.config.getConfig("emas")
     val fightCapacity = config.getInt("fightCapacity")
-    val reproductionCapacity = config.getInt("reproductionCapacity")
+    val mutationCapacity = config.getInt("mutationCapacity")
     val migrationCapacity = config.getInt("migrationCapacity")
     val deathCapacity = config.getInt("deathCapacity")
     val migrationProbability = config.getDouble("migrationProbability")
     val reproductionThreshold = config.getInt("reproductionThreshold")
+    val populationSize = config.getInt("populationSize")
+    val arenas = config.getInt("arenas")
 
     val death = Death(deathCapacity)
-    val fight = Fight(fightCapacity)
-    val reproduce = Reproduction(reproductionCapacity)
+    val fight = Fight(populationSize / arenas)
+    val reproduce = Reproduction(populationSize / arenas)
     val migrate = Migration(migrationCapacity)
+    val mutate = Mutation(mutationCapacity)
 
-    val behaviours = List(death, fight, reproduce, migrate)
+    val behaviours = List(fight, reproduce, mutate)
 
     def behaviourFunction = {
-      case Agent(_, _, energy) => energy match {
-//        case 0 => death
-//        case _ if random.nextDouble() < migrationProbability => migrate
-//        case energy if energy >= reproductionThreshold => reproduce
-
-        case _ =>  fight
+      case Agent(_, _, _, _, evolutionState) => evolutionState match {
+        //        case 0 => death
+        ////        case _ if random.nextDouble() < migrationProbability => migrate
+        ////        case energy if energy >= reproductionThreshold => reproduce
+        //        case _ =>  fight
+        //      case agents: List[Agent] => agents match {
+        case 0 => fight
+        case 1 => reproduce
+        case 2 => mutate
 
       }
     }
+
   }
 
 }

@@ -53,22 +53,19 @@ trait EmasMeetings extends MeetingsStrategy {
     implicit val rand = randomData
 
     def meetingsFunction = {
-      //      case (Death(_), _) => List.empty[Agent[Genetic]]
-      //      case (Reproduction(cap), agents) =>
+
       case (Fight(cap), agents) =>
-        //play a game
         val afterFightAgents = checked[Genetic](agents).grouped(2).flatMap(fightStrategy.apply).toList
-        //reproduce
-        val newAgents = checked[Genetic](afterFightAgents).grouped(agents.size).flatMap(reproductionStrategy.apply).toList
-        //mutate
-        val mutatedAgents = checked[Genetic](newAgents).grouped(1).flatMap(reproductionStrategy.apply).toList
-        var sum:Double=0
-        for(a<-mutatedAgents){
-          sum=sum+a.fitness.asInstanceOf[Double]
-        }
-//        println("Average fitness "+sum/afterFightAgents.size)
-//        "Percentage of cooperations "+
-        println(genetic.evaluateFinalResult(mutatedAgents.map((a:Agent[Genetic])=>a.solution)))
+        afterFightAgents.foreach(a => a.evolutionState = 1)
+        afterFightAgents
+      case (Reproduction(cap), agents) =>
+        val newAgents = checked[Genetic](agents).grouped(cap).flatMap(reproductionStrategy.apply).toList
+        newAgents.foreach(a => a.evolutionState = 2)
+        newAgents
+      case (Mutation(1), agents) =>
+        val mutatedAgents = checked[Genetic](agents).grouped(1).flatMap(reproductionStrategy.apply).toList
+        println(genetic.evaluateFinalResult(mutatedAgents.map((a: Agent[Genetic]) => a.solution)))
+        mutatedAgents.foreach(a => a.evolutionState = 0)
         mutatedAgents
       case (Migration(_), agents) => agents
     }

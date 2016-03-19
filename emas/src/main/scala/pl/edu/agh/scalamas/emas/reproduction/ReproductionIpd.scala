@@ -39,21 +39,20 @@ trait IpdReproductionStrategy extends ReproductionStrategy {
     val reproductionTransfer = agentRuntime.config.getInt("emas.reproductionTransfer")
 
     def apply(agents: List[Agent[Genetic]]) = agents match {
-      case List(a) =>
-        val s = genetic.transform(a.solution)
-        val f = a.fitness
-       // val e = min(reproductionTransfer, a.energy)
-        //List(a.copy(energy = a.energy - e), Agent[Genetic](s, f, e))
-     List( Agent[Genetic](s, f, 0))
-//        val e = min(reproductionTransfer, a.energy)
-//        List(a.copy(energy = a.energy - e), Agent[Genetic](s, f, e))
+      case _ if (agents.size==1) =>
+
+        var solution=agents(0).solution
+        val newsolution=genetic.transform(solution)
+        List(Agent[Genetic](newsolution, agents(0).fitness, 0,agents(0).position,agents(0).evolutionState))
+
       case _ =>
         var solutions: List[Genetic#Solution] = agents.map(x => x.solution)
         solutions = genetic.transform(solutions)
         val newPopulation: ListBuffer[Agent[Genetic]] = ListBuffer[Agent[Genetic]]()
-        for (s <- solutions) {
+        for (i <- 0 to solutions.size-1) {
+          val s=solutions(i)
           val f1 = genetic.evaluate(s)
-          val agent = Agent[Genetic](s, f1, 0)
+          val agent = Agent[Genetic](s, f1, 0,agents(i).position,agents(i).evolutionState)
           newPopulation.+=(agent)
         }
         newPopulation.toList

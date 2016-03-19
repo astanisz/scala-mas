@@ -21,8 +21,8 @@
  */
 package pl.edu.agh.scalamas.mas.async
 
-import akka.actor.{Actor, ActorRef, PoisonPill, Props}
-import pl.edu.agh.scalamas.mas.LogicTypes.{Agent, Population}
+import akka.actor._
+import pl.edu.agh.scalamas.mas.LogicTypes.{Coordinates, Agent, Population}
 import pl.edu.agh.scalamas.mas.RootEnvironment.Add
 import pl.edu.agh.scalamas.mas.async.Arena.Join
 import pl.edu.agh.scalamas.mas.async.Individual.UpdateState
@@ -33,10 +33,10 @@ object Arena {
 
   case class Join(agent: Agent)
 
-  def props(capacity: Int, meeting: (Population) => Population) = Props(classOf[Arena], capacity, meeting)
+  def props(capacity: Int, meeting: (Population) => Population, position:Int) = Props(classOf[Arena], capacity, meeting, position)
 }
 
-class Arena(val capacity: Int, val meeting: (Population) => Population) extends Actor {
+class Arena(val capacity: Int, val meeting: (Population) => Population, val number: Int) extends Actor {
 
   val actors = ArrayBuffer.empty[ActorRef]
   val agents = ArrayBuffer.empty[Agent]

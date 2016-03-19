@@ -21,21 +21,25 @@
  */
 package pl.edu.agh.scalamas.mas
 
-import pl.edu.agh.scalamas.mas.LogicTypes.{MeetingFunction, BehaviourFunction, Behaviour, Population}
+import pl.edu.agh.scalamas.mas.LogicTypes._
 
 /**
  * The types in a MAS simulation
  */
 object LogicTypes {
 
-  trait Agent
+  trait Agent{
+    var position: Coordinates
+  }
+
+  class Coordinates(var x:Int,var y:Int)
 
   /**
    * A collection of agents
    */
   type Population = List[Agent]
 
-  /**
+    /**
    * Possible agent behaviours
    */
   trait Behaviour {
@@ -55,6 +59,10 @@ object LogicTypes {
    */
   type BehaviourFunction = PartialFunction[Agent, Behaviour]
 
+  /**
+   * Position function chooses the nearest arena
+   */
+  type PositionFunction = PartialFunction[(Agent, Int,Behaviour), Int]
   /**
    * A group of agents with similar behaviour
    */
@@ -78,6 +86,10 @@ trait Logic {
   def initialPopulation: Population
 
   /**
+   * number of arenas
+     */
+  def arenas: Int
+  /**
    * The behaviours to be supported for the agents in this simulation.
    * @return the behaviours to be supported for the agents in this simulation.
    */
@@ -88,6 +100,8 @@ trait Logic {
    * @return the agents behaviour function
    */
   def behaviourFunction: BehaviourFunction
+
+  def positionFunction: PositionFunction
 
   /**
    * Callback for the meeting function. The meetings function transforms groups of similar agents into new subpopulations.

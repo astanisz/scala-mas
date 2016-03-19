@@ -29,6 +29,7 @@ import pl.edu.agh.scalamas.mas.{Logic, LogicStrategy}
 trait DelegatingLogicStrategy extends LogicStrategy {
   this: PopulationStrategy
     with BehaviourStrategy
+    with PositionStrategy
     with MeetingsStrategy =>
 
   def logic = DelegatingLogic
@@ -36,11 +37,15 @@ trait DelegatingLogicStrategy extends LogicStrategy {
   object DelegatingLogic extends Logic {
     def initialPopulation = populationStrategy.initialPopulation
 
+    def arenas = populationStrategy.arenasNumber
+
     def behaviours = behaviourStrategy.behaviours
 
     def behaviourFunction = behaviourStrategy.behaviourFunction
 
     def meetingsFunction = meetingsStrategy.meetingsFunction
+
+    def positionFunction = positionStrategy.positionFunction
   }
 
 }

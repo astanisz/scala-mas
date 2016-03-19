@@ -21,7 +21,7 @@
  */
 package pl.edu.agh.scalamas.mas
 
-import akka.actor.{Actor, ActorContext, Props}
+import akka.actor._
 import org.apache.commons.math3.random.RandomGenerator
 import pl.edu.agh.scalamas.mas.LogicTypes.{Agent, MeetingFunction, Migration}
 import pl.edu.agh.scalamas.mas.RootEnvironment.{Add, Migrate}

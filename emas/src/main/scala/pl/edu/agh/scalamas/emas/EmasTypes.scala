@@ -24,20 +24,22 @@ package pl.edu.agh.scalamas.emas
 
 import pl.edu.agh.scalamas.genetic.GeneticOps
 import pl.edu.agh.scalamas.mas.LogicTypes
-import pl.edu.agh.scalamas.mas.LogicTypes.{Population, Behaviour}
+import pl.edu.agh.scalamas.mas.LogicTypes.{Coordinates, Population, Behaviour}
 
 /**
  * Holder for the types of agents and behaviours used in EMAS.
  */
 object EmasTypes {
 
-  case class Agent[G <: GeneticOps[G]](val solution: G#Solution, val fitness: G#Evaluation, var energy: Int) extends LogicTypes.Agent
+  case class Agent[G <: GeneticOps[G]](val solution: G#Solution, val fitness: G#Evaluation, var energy: Int, var position:Coordinates, var evolutionState:Int) extends LogicTypes.Agent
 
   case class Death(capacity: Int) extends Behaviour
 
   case class Fight(capacity: Int) extends Behaviour
 
   case class Reproduction(capacity: Int) extends Behaviour
+
+  case class Mutation(capacity: Int) extends Behaviour
 
   def checked[G <: GeneticOps[G]](pop: Population) = pop.collect { case a: EmasTypes.Agent[G] => a}
 }

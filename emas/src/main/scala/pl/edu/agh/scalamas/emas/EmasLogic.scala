@@ -36,6 +36,7 @@ import pl.edu.agh.scalamas.stats.StatsFactoryComponent
 trait EmasLogic extends DelegatingLogicStrategy
 with EmasPopulation
 with EmasBehaviour
+with EmasPositions
 with EmasMeetings with IpdFightStrategy with IpdReproductionStrategy
 with EmasStats {
 

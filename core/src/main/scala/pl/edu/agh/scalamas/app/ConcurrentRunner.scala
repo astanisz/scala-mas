@@ -21,7 +21,7 @@
  */
 package pl.edu.agh.scalamas.app
 
-import akka.event.Logging
+
 import pl.edu.agh.scalamas.mas.RootEnvironment
 import pl.edu.agh.scalamas.random.RandomGeneratorComponent
 import pl.edu.agh.scalamas.stats.StatsComponent
@@ -56,7 +56,7 @@ trait ConcurrentRunner {
       _ <- Reaper.terminateAfter(root, duration);
       _ <- stats.get) {
       system.shutdown()
-    }
+   }
   }
 
 }
