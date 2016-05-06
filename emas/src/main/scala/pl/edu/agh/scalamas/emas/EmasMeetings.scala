@@ -21,14 +21,16 @@
  */
 package pl.edu.agh.scalamas.emas
 
+
+
+import java.io.{File, PrintWriter}
+
 import pl.edu.agh.scalamas.emas.EmasTypes.{Death, _}
 import pl.edu.agh.scalamas.emas.fight.FightStrategy
 import pl.edu.agh.scalamas.emas.reproduction.ReproductionStrategy
 import pl.edu.agh.scalamas.genetic.GeneticProblem
-import pl.edu.agh.scalamas.mas.LogicTypes.Migration
 import pl.edu.agh.scalamas.mas.logic.MeetingsStrategy
 import pl.edu.agh.scalamas.random.RandomGeneratorComponent
-import pl.edu.agh.scalamas.util.Util._
 
 /**
  * Default EMAS meetings component.
@@ -62,13 +64,14 @@ trait EmasMeetings extends MeetingsStrategy {
         val newAgents = checked[Genetic](agents).grouped(cap).flatMap(reproductionStrategy.apply).toList
         newAgents.foreach(a => a.evolutionState = 2)
         newAgents
-      case (Mutation(1), agents) =>
+      case (Mutation(cap), agents) =>
         val mutatedAgents = checked[Genetic](agents).grouped(1).flatMap(reproductionStrategy.apply).toList
         println(genetic.evaluateFinalResult(mutatedAgents.map((a: Agent[Genetic]) => a.solution)))
         mutatedAgents.foreach(a => a.evolutionState = 0)
         mutatedAgents
-      case (Migration(_), agents) => agents
     }
+
+
   }
 
 }

@@ -27,20 +27,23 @@ import pl.edu.agh.scalamas.mas.LogicTypes.Migration
 import pl.edu.agh.scalamas.mas.logic.BehaviourStrategy
 import pl.edu.agh.scalamas.random.RandomGeneratorComponent
 
+
+
+
 /**
- * Default EMAS behaviour component. Agents choose a behaviour based on their available energy.
- *
- * If the energy is 0, agents die. If it is below some threshold they fight, otherwise they reproduce.
- * Agents also have some probability to migrate to another island.
- *
- * Parameters:
- * - emas.reproductionThreshold - The amount of energy to start reproducing
- * - emas.migrationProbability - The probability for an agent to migrate to another island
- * - emas.deathCapacity - The size of death meetings
- * - emas.fightCapacity - The size of fight meetings
- * - emas.reproductionCapacity - The size of reproduction meetings
- * - emas.migrationCapacity - The size of migration meetings
- */
+  * Default EMAS behaviour component. Agents choose a behaviour based on their available energy.
+  *
+  * If the energy is 0, agents die. If it is below some threshold they fight, otherwise they reproduce.
+  * Agents also have some probability to migrate to another island.
+  *
+  * Parameters:
+  * - emas.reproductionThreshold - The amount of energy to start reproducing
+  * - emas.migrationProbability - The probability for an agent to migrate to another island
+  * - emas.deathCapacity - The size of death meetings
+  * - emas.fightCapacity - The size of fight meetings
+  * - emas.reproductionCapacity - The size of reproduction meetings
+  * - emas.migrationCapacity - The size of migration meetings
+  */
 trait EmasBehaviour extends BehaviourStrategy {
   this: AgentRuntimeComponent with RandomGeneratorComponent =>
 
@@ -58,8 +61,8 @@ trait EmasBehaviour extends BehaviourStrategy {
     val arenas = config.getInt("arenas")
 
     val death = Death(deathCapacity)
-    val fight = Fight(populationSize / arenas)
-    val reproduce = Reproduction(populationSize / arenas)
+    val fight = Fight(2)
+    val reproduce = Reproduction(2)
     val migrate = Migration(migrationCapacity)
     val mutate = Mutation(mutationCapacity)
 
@@ -67,15 +70,9 @@ trait EmasBehaviour extends BehaviourStrategy {
 
     def behaviourFunction = {
       case Agent(_, _, _, _, evolutionState) => evolutionState match {
-        //        case 0 => death
-        ////        case _ if random.nextDouble() < migrationProbability => migrate
-        ////        case energy if energy >= reproductionThreshold => reproduce
-        //        case _ =>  fight
-        //      case agents: List[Agent] => agents match {
         case 0 => fight
         case 1 => reproduce
         case 2 => mutate
-
       }
     }
 

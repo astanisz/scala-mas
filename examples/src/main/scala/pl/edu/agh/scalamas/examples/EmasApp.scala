@@ -20,6 +20,7 @@
  * THE SOFTWARE.
  */
 
+
 package pl.edu.agh.scalamas.examples
 
 import pl.edu.agh.scalamas.app.{ConcurrentStack, SynchronousEnvironment,AsynchronousEnvironment}
@@ -29,15 +30,15 @@ import pl.edu.agh.scalamas.genetic.{IteratedPrisonersDilema, RastriginProblem}
 import scala.concurrent.duration._
 
 /**
- * Example app.
- */
+  * Example app.
+  */
 object EmasApp extends ConcurrentStack("emas")
-  with AsynchronousEnvironment
-  with EmasLogic
-  with IteratedPrisonersDilema {
+    with AsynchronousEnvironment
+    with EmasLogic
+    with IteratedPrisonersDilema {
 
-  def main(args: Array[String]) {
-    run(20 seconds)
-  }
+    def main(args: Array[String]) {
+        run(20 seconds)
+    }
 
 }

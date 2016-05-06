@@ -26,9 +26,8 @@ import pl.edu.agh.ipd.utils.ProbabilityUtils
 
 import scala.collection.mutable.ListBuffer
 
-class StrategyImpl extends Strategy {
-  private var states: ListBuffer[State] = ListBuffer [State]()
-  private var current: State = null
+class StrategyImpl (states:ListBuffer[State]) extends Strategy {
+  private var current: State = if (states.size>0)states.last else null
 
   def getCurrentState: State = {
     return current
@@ -66,7 +65,7 @@ class StrategyImpl extends Strategy {
   }
 
   def getCopy: Strategy = {
-    val copy: Strategy = new StrategyImpl
+    val copy: Strategy = new StrategyImpl(new ListBuffer[State])
     states.foreach{(s: State)=> copy.addState(s.getCopy)}
 
     var i: Int = 0
